@@ -299,7 +299,7 @@ Date: 2023-03-25
          {
             let editText = $(this).parent().parent().children(".editTextInput");
             let text = $(this).parent().parent().text();
-            let editTextValue = editText.val() as string;
+            let editTextValue = editText.val();
             editText.val(text).show().trigger("select");
             editText.on("keypress", function(event)
             {
@@ -334,7 +334,7 @@ Date: 2023-03-25
        let messageArea = $("#messageArea");
        messageArea.hide();
        let taskInput = $("#taskTextInput");
-       let taskInputValue = taskInput.val() as string;
+       let taskInputValue = taskInput.val();
  
        if (taskInput.val() != "" && taskInputValue.charAt(0) != " ") 
        {
