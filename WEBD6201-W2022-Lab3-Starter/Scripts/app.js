@@ -1,3 +1,8 @@
+/* 
+Names: Cole Biglang-awa (100825831) & Nathan Mcquaid (100841457)
+Date: 2023-03-25
+*/
+
 "use strict";
 (function () {
     function AuthGuard() {
@@ -268,6 +273,26 @@
     }
     function Display404Page() {
     }
+
+    function DisplayTaskList() {
+        console.log("Task List Page");
+
+        switch (router.ActiveLink) {
+            case "task-list": return DisplayTaskList;
+            default:
+                console.error("ERROR: callback does not exist: " + router.ActiveLink);
+                return new Function();
+    }
+    }
+
+    function AddNewTask() {
+        let tasklist = new core.TaskList(task1, task2);
+        if (tasklist.serialize()) {
+            let key = tasklist.FullName.substring(0, 1) + Date.now();
+            localStorage.setItem(key, contact.serialize());
+        }
+    }
+
     function ActiveLinkCallBack() {
         switch (router.ActiveLink) {
             case "home": return DisplayHomePage;
@@ -280,6 +305,7 @@
             case "login": return DisplayLoginPage;
             case "register": return DisplayRegisterPage;
             case "404": return Display404Page;
+            case "task-list": return DisplayTaskList;
             default:
                 console.error("ERROR: callback does not exist: " + router.ActiveLink);
                 return new Function();

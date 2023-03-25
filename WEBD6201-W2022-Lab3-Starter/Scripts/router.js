@@ -1,3 +1,8 @@
+/* 
+Names: Cole Biglang-awa (100825831) & Nathan Mcquaid (100841457)
+Date: 2023-03-25
+*/
+
 "use strict";
 var core;
 (function (core) {
@@ -55,7 +60,8 @@ router.AddTable([
     "/products",
     "/register",
     "/login",
-    "/edit"
+    "/edit",
+    "/task-list"
 ]);
 let route = location.pathname;
 router.ActiveLink = (router.Find(route) > -1) ? (route == "/") ? "home" : route.substring(1) : "404";
