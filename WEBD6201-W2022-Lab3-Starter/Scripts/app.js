@@ -274,24 +274,90 @@ Date: 2023-03-25
     function Display404Page() {
     }
 
-    function DisplayTaskList() {
-        console.log("Task List Page");
+    function DisplayTaskList()
+     {
+         let messageArea = $("#messageArea");
+         messageArea.hide();
+         let taskInput = $("#taskTextInput");
+ 
+         // add a new Task to the Task List
+         $("#newTaskButton").on("click", function()
+         {         
+             AddNewTask();
+         });
+ 
+         taskInput.on("keypress", function(event)
+         {
+           if(event.key == "Enter")
+           {
+             AddNewTask();
+           }
+          });
+ 
+         // Edit an Item in the Task List
+         $("ul").on("click", ".editButton", function()
+         {
+            let editText = $(this).parent().parent().children(".editTextInput");
+            let text = $(this).parent().parent().text();
+            let editTextValue = editText.val() as string;
+            editText.val(text).show().trigger("select");
+            editText.on("keypress", function(event)
+            {
+             if(event.key == "Enter")
+             {
+               if(editText.val() != "" && editTextValue.charAt(0) != " ")
+               {
+                 editText.hide();
+                 $(this).parent().children("#taskText").text(editTextValue);
+                 messageArea.removeAttr("class").hide();
+               }
+               else
+               {
+                 editText.trigger("focus").trigger("select");
+                 messageArea.show().addClass("alert alert-danger").text("Please enter a valid Task.");
+               }
+             }
+            });
+         });
+ 
+         // Delete a Task from the Task List
+         $("ul").on("click", ".deleteButton", function(){
+             if(confirm("Are you sure?"))
+             {
+                 $(this).closest("li").remove();
+             }    
+         });
+     }
 
-        switch (router.ActiveLink) {
-            case "task-list": return DisplayTaskList;
-            default:
-                console.error("ERROR: callback does not exist: " + router.ActiveLink);
-                return new Function();
-    }
-    }
-
-    function AddNewTask() {
-        let tasklist = new core.TaskList(task1, task2);
-        if (tasklist.serialize()) {
-            let key = tasklist.FullName.substring(0, 1) + Date.now();
-            localStorage.setItem(key, contact.serialize());
-        }
-    }
+     function AddNewTask() 
+     {
+       let messageArea = $("#messageArea");
+       messageArea.hide();
+       let taskInput = $("#taskTextInput");
+       let taskInputValue = taskInput.val() as string;
+ 
+       if (taskInput.val() != "" && taskInputValue.charAt(0) != " ") 
+       {
+         let newElement = `
+               <li class="list-group-item" id="task">
+               <span id="taskText">${taskInput.val()}</span>
+               <span class="float-end">
+                   <button class="btn btn-outline-primary btn-sm editButton"><i class="fas fa-edit"></i>
+                   <button class="btn btn-outline-danger btn-sm deleteButton"><i class="fas fa-trash-alt"></i></button>
+               </span>
+               <input type="text" class="form-control edit-task editTextInput">
+               </li>
+               `;
+         $("#taskList").append(newElement);
+         messageArea.removeAttr("class").hide();
+         taskInput.val("");
+       } 
+       else 
+       {
+         taskInput.trigger("focus").trigger("select");
+         messageArea.show().addClass("alert alert-danger").text("Please enter a valid Task.");
+       }
+     }
 
     function ActiveLinkCallBack() {
         switch (router.ActiveLink) {
